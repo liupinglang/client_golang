@@ -189,6 +189,10 @@ func Unregister(c Collector) bool {
 	return DefaultRegisterer.Unregister(c)
 }
 
+func MyUnregister(c Collector, metricName string) bool {
+	return DefaultRegisterer.MyUnregister(c, metricName)
+}
+
 // GathererFunc turns a function into a Gatherer.
 type GathererFunc func() ([]*dto.MetricFamily, error)
 
