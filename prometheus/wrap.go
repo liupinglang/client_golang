@@ -85,6 +85,10 @@ type wrappingRegisterer struct {
 	labels            Labels
 }
 
+func (r *wrappingRegisterer) MyUnregister(c Collector, _ string) bool {
+	return r.Unregister(c)
+}
+
 func (r *wrappingRegisterer) Register(c Collector) error {
 	if r.wrappedRegisterer == nil {
 		return nil

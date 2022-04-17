@@ -132,6 +132,8 @@ type Registerer interface {
 	// instance must only collect consistent metrics throughout its
 	// lifetime.
 	Unregister(Collector) bool
+
+	MyUnregister(Collector, string) bool
 }
 
 // Gatherer is the interface for the part of a registry in charge of gathering
@@ -262,6 +264,15 @@ type Registry struct {
 	dimHashesByName       map[string]uint64
 	uncheckedCollectors   []Collector
 	pedanticChecksEnabled bool
+}
+
+func (r *Registry) MyUnregister(c Collector, metricName string) bool {
+	unregister := r.Unregister(c)
+	if unregister {
+		delete(r.dimHashesByName, metricName)
+		return unregister
+	}
+	return false
 }
 
 // Register implements Registerer.
